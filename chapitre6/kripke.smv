@@ -1,0 +1,28 @@
+-- Adapté d'un exercice utilisé à l'Université Technique de Munich
+-- https://www7.in.tum.de/um/courses/mc/ss2018/ex10.pdf avec Javier Esparza
+MODULE main
+VAR
+  etat : {s0, s1, s2, s3};
+ASSIGN
+  init(etat) := s0;
+  next(etat) :=
+    case
+      etat = s0 : {s1, s2};
+      etat = s1 : s3;
+      etat = s2 : {s0, s1, s2};
+      etat = s3 : s2;
+    esac;
+DEFINE
+  p := etat = s0 | etat = s1 | etat = s2;
+  q := etat = s1;
+  
+SPEC
+  EG p
+SPEC
+  AX AF EG p
+SPEC
+  A [p U q]
+SPEC
+  AG (p -> AX p)
+SPEC
+  EX (!q & E [!p U q])

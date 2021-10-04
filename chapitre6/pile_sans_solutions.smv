@@ -1,0 +1,45 @@
+-- Adapté d'un exercice utilisé à l'Université Technique de Munich
+-- https://www7.in.tum.de/um/courses/mc/ss2018/ex10.pdf avec Javier Esparza
+MODULE main
+VAR
+  op     : 0..2; -- 0 = push, 1 = pop, 2 = nop
+  entree : 0..9;
+  sortie : 0..9;
+  ptr    : 0..5;
+  tab    : array 0..4 of 0..9;
+
+DEFINE
+  vide   := (ptr = 0);
+  pleine := (ptr = 5);
+  push   := (op  = 0);
+  pop    := (op  = 1);
+  
+ASSIGN
+  init(ptr) := 0;
+  next(ptr) := case
+                 push & !pleine : ptr + 1;
+                 pop  & !vide   : ptr - 1;
+                 TRUE           : ptr;
+               esac;
+
+  next(tab[0]) := push & ptr = 0 ? entree : tab[0];
+  next(tab[1]) := push & ptr = 1 ? entree : tab[1];
+  next(tab[2]) := push & ptr = 2 ? entree : tab[2];
+  next(tab[3]) := push & ptr = 3 ? entree : tab[3];
+  next(tab[4]) := push & ptr = 4 ? entree : tab[4];
+
+  next(sortie) := case
+                    pop & !vide : tab[ptr - 1];
+                    TRUE        : sortie;
+                  esac;
+    
+-- (a) La pile ne peut pas être vide et pleine au même moment
+SPEC
+  AG !(vide & pleine)
+
+-- (b) Il est possible que la pile devienne éventuellement pleine pour toujours
+-- (c) Il est toujours possible de remplir la pile
+-- (d) La pile ne peut pas être vide après un empilement
+-- (e) Lorsque la pile est pleine, elle demeure pleine jusqu'à ce qu'on dépile
+-- (f) Pour chaque empilement, il est possible de dépiler la valeur empilée
+--     sans en empiler une autre
