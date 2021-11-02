@@ -1,0 +1,231 @@
+\documentclass{article}
+
+%% Packages
+\usepackage[utf8]{inputenc}
+\usepackage[french]{babel}
+\usepackage{amsmath,amssymb}
+\usepackage{enumerate}
+\usepackage{tikz}
+\usetikzlibrary{automata, positioning}
+
+%% Algorithmes
+\usepackage[ruled, french, onelanguage, noend]{algorithm2e}
+\definecolor{colComment}{rgb}{0.13, 0.55, 0.13}
+\newcommand\commentstyle[1]{\ttfamily\textcolor{colComment}{#1}}
+\SetCommentSty{commentstyle}
+\newcommand{\algskip}{\vspace{3pt}}
+\newcommand{\true}{{\mathit{vrai}}}
+\newcommand{\false}{{\mathit{faux}}}
+\SetKwFunction{make}{make}
+
+%% BDD
+\newcommand{\var}[1]{\mathit{var}(#1)}
+\newcommand{\lo}[1]{\mathit{lo}(#1)}
+\newcommand{\hi}[1]{\mathit{hi}(#1)}
+
+%% Automates
+\newcommand{\A}{\mathcal{A}}
+\renewcommand{\P}{\mathcal{P}}
+\newcommand{\trans}[1]{\xrightarrow{#1}}
+
+%% Titre
+\title{IGL502/752: devoir 4}
+\author{Foo McBar}
+\date{16 novembre 2021}
+
+\begin{document}
+\maketitle
+
+%% Contenu
+\section*{Question 1}
+
+\begin{algorithm}
+  \DontPrintSemicolon
+  \KwIn{une expression booléenne $t$}
+  \Sortie{sommet $u$ tel que $f_u = t$}
+
+  \SetKwFunction{build}{build}
+  \SetKwFunction{buildp}{build'}
+  \SetKwProg{myproc}{}{}{}
+
+  \algskip
+  \myproc{\build{$t$}:}{
+    \myproc{\buildp{$t$, $i$}:}{
+      \If{$t = \false$}{\Return{$0$}}
+      \ElseIf{$t = \true$}{\Return{$1$}}
+      \Else{
+        $v_0 \leftarrow \buildp{$t[0/x_i]$, $i+1$}$\;
+        $v_1 \leftarrow \buildp{$t[1/x_i]$, $i+1$}$\;
+
+        \algskip
+        \Return{\make{$x_i$, $v_0$, $v_1$}}
+      }
+    }
+    
+    \algskip    
+    \Return{\buildp{$t$, $1$}}
+  }
+\end{algorithm}
+
+
+\section*{Question 2}
+
+\begin{algorithm}
+  \DontPrintSemicolon
+  \KwIn{sommets $u_1$ et $u_2$}
+  \Sortie{sommet $u$ qui représente $f_u = f_{u_1} \land f_{u_2}$}
+
+  \SetKwFunction{apply}{apply}
+  \SetKwFunction{applyp}{apply'}
+  \SetKwProg{myproc}{}{}{}
+
+  \algskip
+  \myproc{$\apply(u_1, u_2)$:}{
+    $v_1, \ell_1, h_1 \leftarrow \var{u_1}, \lo{u_1}, \hi{u_1}$\; 
+    $v_2, \ell_2, h_2 \leftarrow \var{u_2}, \lo{u_2}, \hi{u_2}$\;
+    \algskip
+    
+    \If{$u_1 \in \{0, 1\}$ et $u_2 \in \{0, 1\}$}{
+      \Return{$u_1 \land u_2$}
+    }
+    \ElseIf(\tcp*[f]{Creuser à gauche}){$v_1 < v_2$}{
+      \Return{\make{$v_1$, \apply{$\ell_1$, $u_2$}, \apply{$h_1$, $u_2$}}}
+    }
+    \ElseIf(\tcp*[f]{Creuser à droite}){$v_1 > v_2$}{
+      \Return{\make{$v_2$, \apply{$u_1$, $\ell_2$}, \apply{$u_1$, $h_2$}}}
+    }
+    \Else(\tcp*[f]{Creuser des deux côtés}){
+      \Return{\make{$v_1$, \apply{$\ell_1$, $\ell_2$}, \apply{$h_1$, $h_2$}}}
+    }
+  }
+\end{algorithm}
+
+\section*{Question 3}
+
+\begin{enumerate}[(a)]
+\item $x_1 \lor \neg x_2$
+  
+\item $x_3 \oplus (x_4 \land x_5)$
+  
+\item 
+
+  \begin{center}
+    \begin{tikzpicture}[auto, very thick]
+      %% Sommets
+      \node[state]                                   (x1)  {$x_1$};
+      \node[state, below  left=0.5cm and 1cm of x1]  (x2a) {$x_2$};
+      \node[state, below right=0.5cm and 1cm of x1]  (x2b) {$x_2$};
+      \node[state, below right=0.5cm and 1cm of x2b] (x3d) {$x_3$};
+
+      \node[state, below=2.0cm of x2a] (0) {$0$};
+      \node[state, below=2.0cm of x2b] (1) {$1$};
+
+      %% Arcs
+      \path[->, dashed]
+      (x1)  edge node {} (x2a)
+      (x2a) edge node {} (1)
+      (x2b) edge node {} (1)
+      (x3d) edge node {} (0)
+      ;
+      
+      \path[->]
+      (x1)  edge node {} (x2b)
+      (x2a) edge node {} (0)
+      (x2b) edge node {} (x3d)
+      (x3d) edge node {} (1)
+      ;
+    \end{tikzpicture}
+  \end{center}
+  
+\item ...
+  
+\item ...
+  
+\end{enumerate}
+
+\section*{Question 4}
+
+\begin{enumerate}[(a)]
+  \setlength\itemsep{12pt}
+  
+\item
+
+  \begin{center}
+    \begin{tikzpicture}[auto, very thick]
+      \node[state]                    (x0) {$x_0$};
+      \node[state, right=2.5cm of x0] (x1) {$x_1$};
+      
+      \path[->]
+      (x0) edge[loop left] node {
+        $
+        \begin{array}{lcl}
+          f_1 &\trans{}& b_0 f_2 \\
+          f_2 &\trans{}& \varepsilon \\
+          b_0 &\trans{}& b_1 \\
+          b_1 &\trans{}& \varepsilon
+      \end{array}
+        $
+      } ()
+    
+      (x1) edge[loop right] node {
+        $
+        \begin{array}{lcl}
+          f_1 &\trans{}& f_0 f_2 \\
+          f_2 &\trans{}& \varepsilon \\
+          b_0 &\trans{}& f_0 b_1 \\
+          b_1 &\trans{}& \varepsilon
+        \end{array}
+        $
+      } ()
+      
+      (x0) edge[bend left=30] node {$f_0 \trans{} f_1$} (x1)
+      (x1) edge[bend left=30] node {$f_0 \trans{} f_1$} (x0)
+      ;
+    \end{tikzpicture}
+  \end{center}
+  
+\item ...
+  
+\item
+
+  \begin{center}
+    \begin{tikzpicture}[auto, node distance=0.75cm, very thick, initial text=]
+      %% États
+      \node[state, initial]                (p) {$p$};
+      \node[state, initial, below= of p]   (q) {$q$};
+      \node[state, initial, below= of q]   (r) {$r$};
+      \node[state, right= of p]            (s) {$s$};
+      \node[state, right= of s, accepting] (t) {$t$};
+
+      %% Transitions
+      \path[->]
+      (p) edge[] node {$a$} (s)
+      (s) edge[] node {$a$} (t)
+      ;
+
+      \path[->, cyan]
+      (p) edge[loop above] node {$b$} (p)      
+      ;
+
+      \path[->, magenta]
+      (r) edge[bend left=60] node {$c$} (p)      
+      ;
+
+      \path[->, orange]
+      (q) edge[] node[swap] {$b$} (s)
+      ;
+
+      \path[->, blue]
+      (p) edge[bend left] node {$a$} (t)      
+      ;
+
+      \path[->, purple]
+      (q) edge[bend right] node[swap] {$b$} (t)
+      ;
+    \end{tikzpicture}
+  \end{center}
+  
+\item ...
+\end{enumerate}
+
+\end{document}
