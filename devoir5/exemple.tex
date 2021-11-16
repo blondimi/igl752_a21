@@ -1,0 +1,187 @@
+\documentclass{article}
+
+%% Packages
+\usepackage[utf8]{inputenc}
+\usepackage[french]{babel}
+\usepackage{amsmath,amssymb}
+\usepackage{enumerate}
+\usepackage{bm}
+\usepackage{tikz}
+\usetikzlibrary{automata, petri, positioning}
+
+% LTL/CTL
+\newcommand{\true}{{\mathit{vrai}}}
+\newcommand{\false}{{\mathit{faux}}}
+\newcommand{\X}{{\mathsf{X}}}
+\newcommand{\F}{{\mathsf{F}}}
+\newcommand{\G}{{\mathsf{G}}}
+\newcommand{\U}{\mathrel{\mathsf{U}}}
+
+%% Réseaux de Petri
+\newcommand{\pn}{\mathcal{N}}
+\renewcommand{\vec}[1]{\bm{#1}}
+\newcommand{\mat}[1]{\mathbf{#1}}
+\newcommand{\Post}{\mathrm{Post}}
+
+%% Chaînes de Markov
+\newcommand{\init}{\vec{\mathrm{init}}}
+\newcommand{\Pmat}{\mat{P}}
+\newcommand{\M}{\mathcal{M}}
+\newcommand{\cyl}[1]{\mathrm{cyl}(#1)}
+\newcommand{\Prob}{\mathbb{P}}
+\renewcommand{\P}{\mathcal{P}}
+
+%% Titre
+\title{IGL502/752: devoir 5}
+\author{Foo McBar}
+\date{7 décembre 2021}
+
+\begin{document}
+\maketitle
+
+%% Contenu
+\section*{Question 1}
+
+\begin{center}
+  \begin{tikzpicture}[auto, node distance=2cm, very thick]
+    \node[place,      label=above:$p$, tokens=2]   (p) {};
+    \node[transition, label=above:$t$, right of=p] (t) {};
+    \node[place,      label=above:$q$, right of=t] (q) {};
+
+    \path[->]
+    (p) edge[bend left] node {} (t)
+    (t) edge[bend left] node {} (p)
+    (t) edge[]          node {} (q)
+    ;
+  \end{tikzpicture}
+\end{center}
+
+\section*{Question 2}
+
+\begin{enumerate}[(a)]
+  
+\item ...
+
+  \begin{center}
+    \begin{tikzpicture}[auto, node distance=1cm, very thick, initial text=]
+      \node[] (11) {$(1, 1)$};
+      \node[below  left=0.5cm and 0.15cm of 11] (03) {$(0, 3)$};
+      \node[below right=0.5cm and 0.15cm of 11] (20) {$(2, 0)$};
+      \node[below right=0.5cm and 0.15cm of 03] (1w) {$(1, \omega)$};
+      \node[below  left=0.5cm and 0.15cm of 1w] (0w) {$(0, \omega)$};
+      \node[below right=0.5cm and 0.15cm of 1w] (ww) {$(\omega, \omega)$};
+
+      \path[->]
+      (11) edge node[swap] {$s$} (03)
+      (11) edge node       {$t$} (20)
+      (03) edge node       {$t$} (1w)
+      (1w) edge node[swap] {$s$} (0w)
+      (1w) edge node       {$t$} (ww)
+      (0w) edge node[swap] {$t$} (ww)
+      (ww) edge[loop right] node[] {$s, t$} ()
+      ;
+    \end{tikzpicture}
+  \end{center}
+  
+\item $\Post^*(\vec{m})$...
+  
+\item $\vec{m}_0$, $\vec{m}_1$, $\vec{m}_2$, ...
+  
+\item ...
+  
+\end{enumerate}
+
+\section*{Question 3}
+
+\begin{enumerate}[(a)]
+\item ...
+
+  \begin{center}
+    \begin{tabular}{c|l|ll}
+      \textbf{Itér.} & \textbf{Base $B$}
+      & \multicolumn{2}{c}{\textbf{Prédécesseurs}} \\
+      
+      \hline
+      
+      0 & $\{(0, 2)\}$ & $(0, 2)_{t_1} = (4, 4)$ & $(0, 2)_{t_2} = (2,
+      1)$ \\
+
+      \hline
+
+      1 & $\{(0, 2), (2, 1)\}$ & $(2, 1)_{t_1} = (4, 3)$ & $(2,
+      1)_{t_2} = (3, 0)$ \\
+
+      \hline
+      
+      2 & $\{(0, 2), (2, 1), (3, 0)\}$ & $(3, 0)_{t_1} = (4, 2)$ &
+      $(3, 0)_{t_2} = (4, 0)$ \\
+
+      \hline
+      
+      3 & $\{(0, 2), (2, 1), (3, 0)\}$ & \multicolumn{2}{c}{base
+        inchangée}
+    \end{tabular}
+  \end{center}
+
+\item ...
+\end{enumerate}
+
+\section*{Question 4}
+
+  \begin{center}
+    \begin{tikzpicture}[auto, node distance=1.25cm, very thick,
+                        transform shape, scale=0.85]
+
+      \node[state, initial, initial text=$1/2$] (s0) {$s_0$};
+      \node[state, right=3cm of s0]             (s1) {$s_1$};
+      \node[state, right=3cm of s1]             (s2) {$s_2$};
+      \node[state, right=3cm of s2]             (s3) {$s_3$};
+
+      \node[state, below=3.25cm of s0]           (s4) {$s_4$};
+      \node[state, right=3cm of s4, initial below,
+            initial text=$1/2$] (s5) {$s_5$};
+      \node[state, right=3cm of s5]             (s6) {$s_6$};
+      \node[state, right=3cm of s6]             (s7) {$s_7$};
+
+      \node[above=0pt of s0] {$\{p, q\}$};
+      \node[above=0pt of s1] {$\{q\}$};
+      \node[above=0pt of s2] {$\{p\}$};
+      \node[above=0pt of s3] {$\{p\}$};
+
+      \node[below=0pt of s4] {$\emptyset$};
+      \node[below=0pt of s5, xshift=-15pt] {$\{p\}$};
+      \node[below=0pt of s6] {$\{p\}$};
+      \node[below=0pt of s7] {$\{q\}$};
+      
+      \path[->]
+      (s0)  edge[]           node {$1$}   (s1)
+      (s1)  edge[loop right] node[swap] {$3/4$} ()
+      (s1)  edge[]           node {$1/4$} (s4)
+      (s2)  edge[]           node {$3/4$} (s3)
+      (s2)  edge[bend right=15] node[swap] {$1/8$} (s5)
+      (s2)  edge[]           node {$1/8$} (s7)
+      (s3)  edge[loop right] node[] {$1$}  ()
+
+      (s4)  edge[] node[] {$1$} (s0)
+      (s5)  edge[bend right=15] node[swap] {$1/2$} (s2)
+      (s5)  edge[] node[] {$1/4$} (s4)
+      (s5)  edge[] node[swap]       {$1/4$} (s6)
+      (s6)  edge[loop above] node[] {$1/2$} (s6)
+      (s6)  edge[bend right=20] node[swap] {$1/2$} (s7)
+      (s7)  edge[bend right=20] node[swap] {$1$}   (s6)
+      ;
+    \end{tikzpicture}
+  \end{center}
+  \begin{enumerate}[(a)]
+    
+  \item Dites si la probabilité $\Prob(\F \G\, p)$ est $>0$, $=0$,
+    $=1$ et/ou $< 1$. Justifiez.
+
+  \item Dites si la probabilité $\Prob(\G \F\, p)$ est $>0$, $=0$,
+    $=1$ et/ou $< 1$. Justifiez.
+
+  \item Dites si tous les états initiaux de $\M$ satisfont la formule
+    PCTL $\P_{\geq 3/4}(p \U \P_{\geq 1/2}(\X\, q))$. Justifiez.
+\end{enumerate}
+
+\end{document}
