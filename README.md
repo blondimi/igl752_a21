@@ -21,4 +21,4 @@ _Fichiers complémentaires du cours IGL502/752 – Techniques de vérification e
 - [Interface Web](https://nicze.de/philipp/bdds/)
 
 ### LoLA (réseaux de Petri)
-- [Page officielle](http://service-technology.org/lola/)
+- [Page officielle](https://theo.informatik.uni-rostock.de/theo-forschung/tools/lola/)
