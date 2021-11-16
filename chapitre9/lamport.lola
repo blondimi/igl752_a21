@@ -1,0 +1,87 @@
+PLACE a1, a2, a3, a4, a5, xt, xf, yt, yf, b1, b2, b3, b4, b5, b6, b7, b8; 
+
+MARKING a1: 1, b1: 1, xf: 1, yf: 1; 
+
+TRANSITION s1
+CONSUME a1: 1;
+PRODUCE a2: 1;
+
+TRANSITION s2
+CONSUME a2: 1, xf: 1;
+PRODUCE a3: 1, xt: 1; 
+
+TRANSITION s3
+CONSUME a2: 1, xt: 1;
+PRODUCE a3: 1, xt: 1; 
+
+TRANSITION s4
+CONSUME a3: 1, yf: 1;
+PRODUCE a4: 1, yf: 1; 
+
+TRANSITION s5
+CONSUME a3: 1, yt: 1;
+PRODUCE a3: 1, yt: 1; 
+
+TRANSITION s6
+CONSUME a4: 1;
+PRODUCE a5: 1;
+
+TRANSITION s7
+CONSUME a5: 1, xf: 1;
+PRODUCE a1: 1, xf: 1; 
+
+TRANSITION s8
+CONSUME a5: 1, xt: 1;
+PRODUCE a1: 1, xf: 1; 
+
+TRANSITION t1
+CONSUME b1: 1;
+PRODUCE b2: 1;
+
+TRANSITION t2
+CONSUME b2: 1, yt: 1;
+PRODUCE b3: 1, yt: 1; 
+
+TRANSITION t3
+CONSUME b2: 1, yf: 1;
+PRODUCE b3: 1, yt: 1; 
+
+TRANSITION t4
+CONSUME b3: 1, xt: 1;
+PRODUCE b4: 1, xt: 1; 
+
+TRANSITION t5
+CONSUME b3: 1, xf: 1;
+PRODUCE b7: 1, xf: 1; 
+
+TRANSITION t6
+CONSUME b4: 1, yf: 1;
+PRODUCE b5: 1, yf: 1; 
+
+TRANSITION t7
+CONSUME b4: 1, yt: 1;
+PRODUCE b5: 1, yf: 1; 
+
+TRANSITION t8
+CONSUME b5: 1, xf: 1;
+PRODUCE b6: 1, xf: 1; 
+
+TRANSITION t9
+CONSUME b5: 1, xt: 1;
+PRODUCE b5: 1, xt: 1; 
+
+TRANSITION t10
+CONSUME b6: 1;
+PRODUCE b2: 1;
+
+TRANSITION t11
+CONSUME b7: 1;
+PRODUCE b8: 1;
+
+TRANSITION t12
+CONSUME b8: 1, yf: 1;
+PRODUCE b1: 1, yf: 1; 
+
+TRANSITION t13
+CONSUME b8: 1, yt: 1;
+PRODUCE b1: 1, yf: 1;
