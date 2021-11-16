@@ -19,3 +19,6 @@ _Fichiers complémentaires du cours IGL502/752 – Techniques de vérification e
 
 - [Page officielle](https://github.com/suyjuris/obst)
 - [Interface Web](https://nicze.de/philipp/bdds/)
+
+### LoLA (réseaux de Petri)
+- [Page officielle](http://service-technology.org/lola/)
