@@ -15,8 +15,8 @@ endmodule
 
 // Incrémente le nombre d'envois chaque fois que «envoyer» est atteint
 rewards "nombre_envois"
-	(etat = 0 | etat = 3) : 1;
-	(etat = 1 | etat = 2) : 0;
+	(etat = 1) : 1;
+	(etat = 0 | etat = 2 | etat = 3) : 0;
 endrewards
 
 // Propositions atomiques
