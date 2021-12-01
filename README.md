@@ -22,3 +22,6 @@ _Fichiers complémentaires du cours IGL502/752 – Techniques de vérification e
 
 ### LoLA (réseaux de Petri)
 - [Page officielle](https://theo.informatik.uni-rostock.de/theo-forschung/tools/lola/)
+
+### PRISM
+- [Page officielle](http://www.prismmodelchecker.org/)
